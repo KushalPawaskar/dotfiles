@@ -1,0 +1,12 @@
+[user]
+	name = kushalpawaskar
+	email = kushalpawaskar02@gmail.com
+[core]
+	editor = nvim
+	excludesfile = /Users/kpmac/.gitignore_global
+[init]
+	defaultBranch = main
+[color]
+	ui = true
+[http]
+	postBuffer = 157286400
