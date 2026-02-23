@@ -1,0 +1,27 @@
+•Increasing boot disk size
+# Go to instance details page -> scroll down to "Storage" section -> click on the boot disk name -> Edit -> increase disk size (e.g. from 10 GB to 100 GB) -> Save  (No need to add additional disks if you don't want to keep data separate)
+# Start the instance, login, and run the following
+df -h                  // (or lsblk) identify the main partition corresponding to the original disk, e.g. /dev/sda1; if the partition/disk shows updated size then done, else run the following command and check again
+# sudo resize2fs /dev/sda1         // use the correct partition in place of /dev/sda1
+
+
+•CUDA setup
+# Follow https://docs.nvidia.com/cuda/cuda-installation-guide-linux/
+lspci | grep -i nvidia      // should return some ouptut denoting presence of a CUDA-capable gpu
+hostnamectl                 // to check whether you have a supported version of linux
+gcc --version               // gcc should be installed; if not installed, run ```sudo apt update && sudo apt install build-essential```
+# Follow the CUDA Toolkit Installer (deb local) and Driver Installer (proprietary) instructions from https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Debian&target_version=12&target_type=deb_local
+sudo reboot
+# Add the following line to .bashrc
+export PATH=${PATH}:/usr/local/cuda-13.0/bin
+
+
+•Install tmux and neovim
+# Set up using custom config
+
+
+•Install uv for python virtual environment management
+
+
+•Install zsh
+# Set up using custom config
