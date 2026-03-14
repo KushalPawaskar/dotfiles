@@ -54,3 +54,8 @@ opt.swapfile = false
 
 -- netrw settings
 vim.g.netrw_keepdir = 0   -- 1 means that current directory will be immune from browsing directory, 0 means that current directory will change with browsing directory
+
+-- nvimdiff colorscheme
+if vim.g.diff_mode then
+    vim.cmd("colorscheme sorbet")
+end
