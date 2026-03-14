@@ -26,7 +26,9 @@ function M.apply(config)
                     end)(),
                     action = wezterm.action_callback(function(window, pane, id, label)
                         if label then
-                            window:set_config_overrides({ color_scheme = label })
+                            local overrides = window:get_config_overrides() or {}
+                            overrides.color_scheme = label
+                            window:set_config_overrides(overrides)
                         end
                         window:perform_action(wezterm.action.PopKeyTable, pane)
                     end),
@@ -40,7 +42,6 @@ function M.apply(config)
                 key = 't',      -- t t (toggle enable_tab_bar)
                 action = wezterm.action_callback(function(window, pane)
                     local overrides = window:get_config_overrides() or {}
-                    -- overrides.enable_tab_bar = not (overrides.enable_tab_bar ~= false)
                     overrides.enable_tab_bar = not overrides.enable_tab_bar
                     window:set_config_overrides(overrides)
                     window:perform_action(wezterm.action.PopKeyTable, pane)
