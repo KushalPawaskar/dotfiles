@@ -29,6 +29,9 @@ function M.apply(config)
             { Text = status },
         }))
     end)
+
+    -- scrolling
+    config.enable_scroll_bar = true
 end
 
 return M

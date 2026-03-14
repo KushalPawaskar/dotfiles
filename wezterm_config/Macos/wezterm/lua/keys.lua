@@ -40,7 +40,8 @@ function M.apply(config)
                 key = 't',      -- t t (toggle enable_tab_bar)
                 action = wezterm.action_callback(function(window, pane)
                     local overrides = window:get_config_overrides() or {}
-                    overrides.enable_tab_bar = not (overrides.enable_tab_bar ~= false)
+                    -- overrides.enable_tab_bar = not (overrides.enable_tab_bar ~= false)
+                    overrides.enable_tab_bar = not overrides.enable_tab_bar
                     window:set_config_overrides(overrides)
                     window:perform_action(wezterm.action.PopKeyTable, pane)
                 end),
@@ -70,6 +71,26 @@ function M.apply(config)
                 name = "t_mode",
                 one_shot = true
             }
+        },
+        {
+            key = "UpArrow",    -- scroll up
+            mods = "SUPER",
+            action = wezterm.action.ScrollByLine(-1)
+        },
+        {
+            key = "DownArrow",    -- scroll down
+            mods = "SUPER",
+            action = wezterm.action.ScrollByLine(1)
+        },
+        {
+            key = "UpArrow",    -- jump to previous prompt line
+            mods = "SUPER|SHIFT",
+            action = wezterm.action.ScrollToPrompt(-1)
+        },
+        {
+            key = "DownArrow",    -- jump to next prompt line
+            mods = "SUPER|SHIFT",
+            action = wezterm.action.ScrollToPrompt(1)
         },
     }
 end

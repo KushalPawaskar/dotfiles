@@ -3,10 +3,26 @@
 	email = kushalpawaskar02@gmail.com
 [core]
 	editor = nvim
+    autocrlf = input
 	excludesfile = /Users/kpmac/.gitignore_global
 [init]
 	defaultBranch = main
+[merge]
+    tool = nvimdiff
+[mergetool "nvimdiff"]
+    ; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" -c "wincmd J" -c "wincmd ="
+    ; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +wincmd\\ J +wincmd\\ =
+	; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +1wincmd\\ w +wincmd\\ H +3wincmd\\ w +wincmd\\ L +4wincmd\\ w +wincmd\\ J +wincmd\\ =
+    ; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +"/$MERGED" +wincmd\\ J +wincmd\\ =
+	cmd = nvim -d "$LOCAL" "$REMOTE" "$MERGED" +wincmd\\ J +wincmd\\ =
+[diff]
+    tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = NVIM_APPNAME=nvim-diff nvim -d "$LOCAL" "$REMOTE"
+    ; cmd = nvim -d "$LOCAL" "$REMOTE"
+[difftool]
+    prompt = true
 [color]
-	ui = true
+	ui = auto
 [http]
 	postBuffer = 157286400

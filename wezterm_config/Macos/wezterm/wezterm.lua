@@ -16,7 +16,6 @@ appearance.apply(config)
 colors.apply(config)
 keys.apply(config)
 
--- scrolling using keyboard (super + up/down), increase scrolling speed
 -- jumping to prompt lines (super + shift + up/down)
 -- hotkey window
 -- broadcast input
