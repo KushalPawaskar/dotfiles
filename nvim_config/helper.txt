@@ -1,0 +1,113 @@
+•To go back and forth through buffers, use <ctrl-o> and <ctrl-i> respectively
+
+•To shift line forward (indent) or backward by a tab, press >> or << respectively, in normal mode (press only once in visual mode for single or multiple lines)
+
+•To exit from terminal mode in nvim, use <ctrl-\><ctrl-n> (<ctrl-w>N does not work)
+
+•Opening netrw: {/L/R/H/T/S/V}Explore
+
+•Opening a file from netrw:
+p previews the file above in a horizontal split
+o opens file below in a horizontal split
+v opens file to the right in a vertical split
+t opens the file in a new tab
+<CR> opens the file in the same window as netrw
+x opens the file/directory in default app
+
+•Moving cursor across windows: <ctrl-w>{hjkl} or <ctrl-{hjkl}> in normal, <ctrl-\>{hjkl}
+
+•Moving windows:
+<C-w>T moves window to new tab
+<C-w>r moves windows from left-right (top-bottom) in case of only vertically (horizontally) split windows
+<C-w>R moves windows in reverse direction of above
+<C-w>{HJKL} moves window to far {left/bottom/top/right} and makes it take full height/width
+
+•Resizing windows:
+<M-arrow> to change height (width) by 10 (20) units (1 unit = 1 row/column length) [M is option key]
+<C-w> num {><-+} to change {width(right)/width(left)/height(decrease)/height(increase)} by num units
+
+•Navigating:
+j/k will navigate through real lines (rows) in vim
+gj/gk can be used to navigate through displayed lines (rows)
+Similarly for $/g$ or 0/g0
+
+•Visual mode
+After yanking cursor goes to the topmost line of the yanked text. Press '] to go to the bottommost line of the previously yanked text, '[ to go to the topmost line
+
+•Scrolling: (normal mode)
+<C-y> moves screen up one line
+<C-e> moves screen down one line
+<C-u> moves cursor & screen up 1/2 page
+<C-d> moves cursor & screen down 1/2 page
+<C-b> moves screen up one page, cursor to last line
+<C-f> moves screen down one page, cursor to first line
+
+•Incrementing and decrementing numbers (negative, multiple digits included)
+<C-a> to increase number under the cursor in normal mode
+<C-x> to decrease number under the cursor in normal mode
+
+•LSP:
+Check ~/.config/nvim/lua/lsp.lua for various keyboard shortcuts. e.g. <space>ca for code actions, <space>e for diagnostics
+To make pylsp show completions for libraries installed in a virtual environment, activate the virtual environment before starting nvim, i.e. in the same terminal window
+
+•Directory (netrw)
+To make a directory the present working directory, press cd in netrw (not :cd) in the required directory (not required anymore since g:netrw_keepdir = 0 takes care of this)
+
+•Find [and Replace]
+:%s/pattern_to_be_found/pattern_that_replaces_it/       (replaces the first occurence of the found pattern on each line)
+:%s/pattern_to_be_found/pattern_that_replaces_it/g      (replaces all occurences of the found pattern on each line)
+:%s/pattern_to_be_found//gn                             (counts the occurences of the found pattern)
+*Ncgn                                                   (select text in visual mode (optional); * will search for next matching pattern and highlight all matching patterns; N to go back to original pattern; cgn will delete selection, enable insert mode, g stands for all, n stands for next which will be useful during . command later; type replacement, esc, press .)
+/{pattern}cgn                                           (same as above but search for pattern explicitly)
+
+•Incremental selection (nvim-treesitter)
+<space>-ss to incrementally select (e.g. word → line → block → ..)
+<bs> (backspace) to decrement selections in reverse order
+
+•Folds
+set foldmethod=...      (syntax/indent usually does the job, can use expr with treesitter)
+z[o/O/c/C/m/M/r/R]      (check description with which-key)
+
+•Commenting
+gcc to comment current line
+gc (in visual mode) to comment selected lines
+gc (followed by vim motion e.g. 3j to comment current line and next 3 lines)
+
+•Inter-file navigation
+gf: Go to file under cursor (opens in same window)
+<C-w> f: Go to file under cursor (opens in a horizontal split)
+<C-w> gf: Go to file under cursor (opens in a new tab)
+gx: Open the directory of current file in default app
+
+•Fuzzy finder (telescope)
+<space>ff to fuzzy find files in cwd
+<space>fr to fuzzy find recent files
+<space>fs to fuzzy find string in cwd
+<space>fc to fuzzy find string under cursor in cwd
+<space>fb to fuzzy find open buffers (sorted by most recently used)
+<space>cs to see colorschemes (also the ones that aren't loaded)
+<C-jk> to go through results
+<Tab> to select a result
+<C-q> to send selections to quick fix list and open quick fix list
+<C-/> to see insert mode key bindings
+
+•Multicursors
+<M-n> to add cursor and move to next match
+<M-N> to move to next match skipping current
+<M-q> to toggle cursor at current location (press esc after placing all the cursors to enable them, esc again to get rid of multiple cursors)
+<up> to place cursor and move above (preceed with <space> to skip current)
+<down> to place cursor and move below (preceed with <space> to skip current)
+
+•File information
+<C-g>: Shows path from current working directory, number of lines, and percentage file covered from top
+1<C-g>: Same as above but with full filepath instead
+2<C-g>: Same as above but with buffer number
+g<C-g>: Shows cursor position and word, character, byte statistics
+
+
+
+---------------------Old (Packer + mason)----------------------------
+
+•To find existing keymaps use :map or :map! (the number in filename specified next to a keymap may not be exact, e.g., <C-E> (for aborting completion menu in insert mode) shows <~/.local/share/nvim/site/pack/packer/start/nvim-cmp/lua/cmp/utils/keymap.lua:127> but it can actually be found only in ~/.local/share/nvim/site/pack/packer/start/nvim-cmp/lua/cmp/config/mapping.lua)
+
+•Code actions: go to the required line (e.g. line with error), press <space>ca

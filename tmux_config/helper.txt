@@ -1,0 +1,58 @@
+•tmux
+tmux new -s SESSION_NAME        (to create a new session)
+tmux attach -t SESSION_NAME     (to attach to a created session)
+tmux detach                     (to detach from a session)
+tmux ls                         (to view all sessions)
+
+•Prefix is <C-b>
+
+•Session
+C-b d               (detach from a session)
+C-b s               (switch between sessions)
+C-b r               (reload config)     # does not work
+C-b I               (install plugins)
+C-b U               (update plugins)
+C-b C-s             (save session manually)
+C-b C-r             (restore session)
+
+•Window panes
+C-b v               (split window horizontally)
+C-b V               (split window vertically)
+
+•Resize panes
+C-b h
+C-b j
+C-b k
+C-b l               
+C-b m               (maximize/restore pane)
+
+•Rotate panes
+C-b C-o
+
+•Pane layout
+C-b <space>         (next layout)
+C-b M-{1-7}         (select 1 of the 7 layouts, M is the meta key (set to left option key in iterm2))
+
+•Pane navigation    (can navigate across nvim windows and tmux panes as well)
+C-h
+C-j
+C-k
+C-l
+
+•Windows
+C-b c               (create a new window)
+C-b NUM             (navigate to window #NUM)
+C-b ,               (rename current window)
+C-b n               (Navigate to next window)
+C-b p               (Navigate to previous window)
+C-b w               (view all windows of all sessions)
+
+•Copy mode
+C-b [               (enter copy mode)
+C-c                 (exit copy mode)
+
+•Vim mode is enabled in copy mode
+
+•Press C-b before typing : commands
+
+•Refer https://tmuxcheatsheet.com/
