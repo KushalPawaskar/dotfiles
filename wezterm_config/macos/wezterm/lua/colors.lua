@@ -11,7 +11,7 @@ M.nice_color_schemes = {
 }
 
 function M.apply(config)
-    config.color_scheme = M.nice_color_schemes[5]   -- lua tables have 1-indexing
+    config.color_scheme = M.nice_color_schemes[1]   -- lua tables have 1-indexing
 end
 
 -- Vibrant colors
