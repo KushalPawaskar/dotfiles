@@ -104,3 +104,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# wezterm shell integrations
+. /Applications/WezTerm.app/Contents/Resources/wezterm.sh
