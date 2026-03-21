@@ -88,7 +88,7 @@ function M.apply(config)
     -- window
     config.window_decorations = "RESIZE"    -- default: "TITLE | RESIZE"
     config.window_background_opacity = 0.90
-    -- config.macos_window_background_blur = 1
+    config.macos_window_background_blur = 7
 
     wezterm.on("update-right-status", function(window, pane)
         local status = ''
