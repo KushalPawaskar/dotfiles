@@ -1,102 +1,137 @@
-hs.window.animationDuration = 0
+local Logger = hs.logger.new("default", "info")
+local spaces = require("hs.spaces")
+local quake = "quake"
+local wez = {}
 
-local QUAKE_TITLE = "wezterm-quake"
-local QUAKE_HEIGHT_RATIO = 0.35
-local WEZTERM_BUNDLE = "com.github.wez.wezterm"
+local wezterm_exec = "/opt/homebrew/bin/wezterm"
+local is_spawning = false
 
-local quakeVisible = false
-local previousApp = nil
-local quakeAppPid = nil
+function wez.placeWindow(win)
+    if not win then return end
 
-local function findQuakeAppAndWindow()
-    if quakeAppPid then
-        local app = hs.application.applicationForPID(quakeAppPid)
-        if app then
-            for _, win in ipairs(app:allWindows()) do
-                if string.find(win:title(), QUAKE_TITLE, 1, true) then
-                    return app, win
+    local screen = hs.mouse.getCurrentScreen()
+    local max = screen:frame()
+    local f = win:frame()
+
+    -- Target dimensions
+    f.x = max.x
+    f.y = max.y
+    f.w = max.w
+    f.h = max.h * 0.4
+
+    -- 1. Snap to the correct position and size
+    win:setFrame(f, 0)
+
+    -- 2. The 1-Pixel Jiggle: Force WezTerm to redraw its internal grid
+    hs.timer.doAfter(0.05, function()
+        if win then
+            f.h = f.h + 1 -- Add 1 pixel
+            win:setFrame(f, 0)
+
+            hs.timer.doAfter(0.05, function()
+                if win then
+                    f.h = f.h - 1 -- Remove 1 pixel (back to perfect size)
+                    win:setFrame(f, 0)
                 end
-            end
+            end)
         end
-        quakeAppPid = nil
-    end
-
-    for _, app in ipairs(hs.application.applicationsForBundleID(WEZTERM_BUNDLE)) do
-        for _, win in ipairs(app:allWindows()) do
-            if string.find(win:title(), QUAKE_TITLE, 1, true) then
-                quakeAppPid = app:pid()
-                return app, win
-            end
-        end
-    end
-    return nil, nil
-end
-
-local function positionQuakeWindow(win)
-    local screen = hs.screen.mainScreen()
-    local max = screen:fullFrame()
-    win:setFrame(hs.geometry.rect(max.x, max.y, max.w, max.h * QUAKE_HEIGHT_RATIO))
-end
-
-local function ensureNormalWeztermRunning()
-    local wez = hs.application.find("WezTerm", true)
-    if not wez then
-        hs.application.open(WEZTERM_BUNDLE)
-    end
-end
-
-local function launchQuakeWindow()
-    ensureNormalWeztermRunning()
-    hs.timer.doAfter(0.5, function()
-        hs.task.new("/bin/sh", function() end, {
-            "-c",
-            "export WEZTERM_QUAKE=1;"
-            .. " /Applications/WezTerm.app/Contents/MacOS/wezterm"
-            .. " start --always-new-process"
-            .. " --position active:0,0",
-        }):start()
     end)
 end
 
-local function toggleQuakeTerminal()
-    local app, win = findQuakeAppAndWindow()
+function wez.findWindow(workspace)
+    local app = hs.application.get("wezterm")
+    if not app then return nil end
 
-    if not app then
-        previousApp = hs.application.frontmostApplication()
-        launchQuakeWindow()
-        hs.timer.doAfter(2.5, function()
-            local a, w = findQuakeAppAndWindow()
-            if a and w then
-                positionQuakeWindow(w)
-                a:activate()
-                w:focus()
-                quakeVisible = true
+    for _, win in ipairs(app:allWindows()) do
+        if win:title() and string.find(win:title():lower(), workspace:lower()) then
+            return win
+        end
+    end
+    return nil
+end
+
+function wez.spawn(workspace)
+    if is_spawning then return end
+    is_spawning = true
+
+    local args = {
+        "start",
+        "--class", "org.wezfurlong.wezterm." .. workspace,
+        "--workspace", workspace,
+        "--domain", "unix",
+        "--attach"
+    }
+    hs.task.new(wezterm_exec, nil, args):start()
+
+    local count = 0
+    hs.timer.waitUntil(
+        function()
+            count = count + 1
+            if count >= 50 then return true end
+            return wez.findWindow(workspace) ~= nil
+        end,
+        function()
+            is_spawning = false
+            local win = wez.findWindow(workspace)
+            if win then
+                hs.timer.doAfter(0.1, function()
+                    wez.placeWindow(win)
+                    win:focus()
+                end)
+            else
+                Logger.w("Failed to find window after spawning.")
             end
-        end)
+        end,
+        0.1
+    )
+end
+
+function wez.toggleFocus(workspace)
+    if is_spawning then return end
+
+    local win = wez.findWindow(workspace)
+
+    if not win then
+        wez.spawn(workspace)
         return
     end
 
-    if quakeVisible then
-        app:hide()
-        quakeVisible = false
-        if previousApp then
-            previousApp:activate()
-            previousApp = nil
+    local currentSpace = spaces.focusedSpace()
+    local winSpaces = spaces.windowSpaces(win:id())
+    local isOnCurrentSpace = false
+
+    if winSpaces then
+        for _, s in ipairs(winSpaces) do
+            if s == currentSpace then isOnCurrentSpace = true end
+        end
+    end
+
+    if isOnCurrentSpace then
+        local activeWin = hs.window.focusedWindow()
+        if activeWin and activeWin:id() == win:id() then
+            win:close()
+        else
+            hs.timer.doAfter(0.05, function()
+                wez.placeWindow(win)
+                win:focus()
+            end)
         end
     else
-        local frontApp = hs.application.frontmostApplication()
-        if frontApp and frontApp:bundleID() ~= WEZTERM_BUNDLE then
-            previousApp = frontApp
-        end
-        app:unhide()
-        hs.timer.doAfter(0.2, function()
-            positionQuakeWindow(win)
-            win:raise()
-            app:activate()
-            win:focus()
-        end)
-        quakeVisible = true
+        win:close()
+
+        local count = 0
+        hs.timer.waitUntil(
+            function()
+                count = count + 1
+                if count >= 50 then return true end
+                return wez.findWindow(workspace) == nil
+            end,
+            function()
+                wez.spawn(workspace)
+            end,
+            0.05
+        )
     end
 end
 
-hs.hotkey.bind({"ctrl", "alt", "cmd", "shift"}, "H", toggleQuakeTerminal)
+hs.hotkey.bind({ "ctrl", "alt", "cmd", "shift" }, "H", function() wez.toggleFocus(quake) end)
