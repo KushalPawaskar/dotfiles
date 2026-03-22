@@ -55,13 +55,15 @@ function wez.spawn(workspace)
     is_spawning = true
 
     local args = {
+        "WEZTERM_QUAKE=1",
+        wezterm_exec,
         "start",
         "--class", "org.wezfurlong.wezterm." .. workspace,
         "--workspace", workspace,
         "--domain", "unix",
         "--attach"
     }
-    hs.task.new(wezterm_exec, nil, args):start()
+    hs.task.new("/usr/bin/env", nil, args):start()
 
     local count = 0
     hs.timer.waitUntil(
