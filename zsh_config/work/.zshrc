@@ -94,35 +94,8 @@ if [ -f "$HOME/installs/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/in
 # iterm2 shell integration
 test -e $HOME/.iterm2_shell_integration.zsh && source $HOME/.iterm2_shell_integration.zsh || true
 
-# wezterm shell integration (semantic zones are handled below to avoid venv prompt conflicts)
-WEZTERM_SHELL_SKIP_SEMANTIC_ZONES=1
+# wezterm shell integration
 . /Applications/WezTerm.app/Contents/Resources/wezterm.sh
-
-# OSC 133 semantic zone markers for wezterm.
-# Injected here rather than in the gallois theme to keep the theme file untouched.
-# These override the theme's precmd/preexec to wrap them with zone markers, and
-# append the 133;B (end-of-prompt) marker to PROMPT so it lands after any venv prefix.
-__wezterm_sz_executing=""
-__orig_gallois_precmd=$functions[precmd]
-__orig_gallois_preexec=$functions[preexec]
-
-function precmd() {
-    local ret="$?"
-    if [[ -n "$__wezterm_sz_executing" ]]; then
-        printf "\033]133;D;%s;aid=%s\007" "$ret" "$$"
-    fi
-    printf "\033]133;A;cl=m;aid=%s\007" "$$"
-    __wezterm_sz_executing=0
-    eval "$__orig_gallois_precmd"
-}
-
-function preexec() {
-    eval "$__orig_gallois_preexec"
-    printf "\033]133;C;\007"
-    __wezterm_sz_executing=1
-}
-
-PROMPT='$custom_prompt%{$(printf "\033]133;B\007")%}'
 
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
