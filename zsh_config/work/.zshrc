@@ -95,7 +95,7 @@ if [ -f "$HOME/installs/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/in
 test -e $HOME/.iterm2_shell_integration.zsh && source $HOME/.iterm2_shell_integration.zsh || true
 
 # wezterm shell integration
-. /Applications/WezTerm.app/Contents/Resources/wezterm.sh
+test -e /Applications/WezTerm.app/Contents/Resources/wezterm.sh && . /Applications/WezTerm.app/Contents/Resources/wezterm.sh || true
 
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
