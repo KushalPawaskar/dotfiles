@@ -8,10 +8,11 @@
     tool = nvimdiff
 [mergetool "nvimdiff"]
     ; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" -c "wincmd J" -c "wincmd ="
-    ; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +wincmd\\ J +wincmd\\ =
+    ; cmd = NVIM_APPNAME=nvim-diff nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +wincmd\\ J +wincmd\\ =
+    cmd = NVIM_APPNAME=nvim-diff nvim -d "$LOCAL" "$MERGED" "$REMOTE"
 	; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +1wincmd\\ w +wincmd\\ H +3wincmd\\ w +wincmd\\ L +4wincmd\\ w +wincmd\\ J +wincmd\\ =
     ; cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" +"/$MERGED" +wincmd\\ J +wincmd\\ =
-	cmd = nvim -d "$LOCAL" "$REMOTE" "$MERGED" +wincmd\\ J +wincmd\\ =
+	; cmd = nvim -d "$LOCAL" "$REMOTE" "$MERGED" +wincmd\\ J +wincmd\\ =
 [diff]
     tool = nvimdiff
 [difftool "nvimdiff"]
