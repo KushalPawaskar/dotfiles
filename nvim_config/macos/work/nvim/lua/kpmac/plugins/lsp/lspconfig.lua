@@ -3,6 +3,7 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     'saghen/blink.cmp',
+    'nvim-lua/plenary.nvim',
     { 'antosha417/nvim-lsp-file-operations', config = true },
     { 'folke/lazydev.nvim', opts = {} },
   },
@@ -15,7 +16,7 @@ return {
           vim.keymap.set('n', keys, func, { buffer = ev.buf, desc = 'LSP: ' .. desc })
         end
 
-        -- map('gr', vim.lsp.buf.references, 'References')              -- grr native nvim
+        -- map('gr', vim.lsp.buf.references, 'References')              -- grr native nvim; also <leader>sr via snacks picker
         map('gd', vim.lsp.buf.definition, 'Definition')
         -- map('gy', vim.lsp.buf.type_definition, 'Type Definition')    -- grt native nvim
         map('gD', vim.lsp.buf.declaration, 'Declaration')

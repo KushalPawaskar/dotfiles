@@ -68,7 +68,7 @@ keymap.set('n', '<leader>nh', ':nohl<CR>', { desc = 'Clear search highlights' })
 keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic' })
 keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic' })
 keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic message' })
-keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+keymap.set('n', '<leader>q', function() require('snacks').picker.diagnostics() end, { desc = 'Project diagnostics' })
 
 -----------------
 -- Visual mode --

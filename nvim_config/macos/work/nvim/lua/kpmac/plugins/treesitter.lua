@@ -21,8 +21,8 @@ return {
         incremental_selection = {
             enable = true,
             keymaps = {
-                init_selection = '<leader>ss',
-                node_incremental = '<leader>ss',
+                init_selection = '<leader>si',
+                node_incremental = '<leader>si',
                 scope_incremental = false,
                 node_decremental = '<bs>',
             },
