@@ -5,9 +5,16 @@ M.nice_color_schemes = {
     "Argonaut (Gogh)",
     "ayu",
     "Builtin Pastel Dark",
-    "Cupertino (base16)",   -- light
     "ChallengerDeep",
     "Cobalt 2 (Gogh)",
+    "Digerati (terminal.sexy)",
+    "Dracula",
+    "duckbones",
+    "Ef-Autumn",
+    "Ef-Day",       -- light
+    "Ef-Winter",
+    "Eldritch",
+    "Elio (Gogh)"
 }
 
 function M.apply(config)
