@@ -2,13 +2,13 @@ return {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
     config = function()
-        require("claudecode").setup(require("kpmac.terminals").claude_config())
+        require("claudecode").setup(require("kpmac.lib.terminals").claude_config())
     end,
     keys = {
         { "<leader>a", nil, desc = "AI/Claude Code" },
-        { "<leader>ac", function() require("kpmac.terminals").toggle_claude() end, desc = "Toggle Claude" },
-        { "<leader>af", function() require("kpmac.terminals").focus_claude() end, desc = "Focus Claude" },
-        { "<leader>al", function() require("kpmac.terminals").cycle_claude_layout() end, desc = "Cycle Claude layout" },
+        { "<leader>ac", function() require("kpmac.lib.terminals").toggle_claude() end, desc = "Toggle Claude" },
+        { "<leader>af", function() require("kpmac.lib.terminals").focus_claude() end, desc = "Focus Claude" },
+        { "<leader>al", function() require("kpmac.lib.terminals").cycle_claude_layout() end, desc = "Cycle Claude layout" },
         { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
         { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
         { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
