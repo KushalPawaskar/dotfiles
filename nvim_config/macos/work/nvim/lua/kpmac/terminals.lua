@@ -176,7 +176,7 @@ function M.claude_config()
         },
         diff_opts = {
             open_in_new_tab = true,
-            keep_terminal_focus = true,
+            keep_terminal_focus = false, -- focus the new diff tab (true keeps focus on Claude terminal)
             hide_terminal_in_new_tab = true,
             layout = "vertical",
         },
