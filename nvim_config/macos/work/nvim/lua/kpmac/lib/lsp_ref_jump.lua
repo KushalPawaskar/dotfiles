@@ -148,10 +148,10 @@ function M.setup_keymaps()
                 if not vim.api.nvim_buf_is_valid(ev.buf) then
                     return
                 end
-                vim.keymap.set({ "n", "t" }, "]]", function()
+                vim.keymap.set("n", "]]", function()
                     M.jump(vim.v.count1)
                 end, { buffer = ev.buf, desc = "Next reference" })
-                vim.keymap.set({ "n", "t" }, "[[", function()
+                vim.keymap.set("n", "[[", function()
                     M.jump(-vim.v.count1)
                 end, { buffer = ev.buf, desc = "Prev reference" })
             end)

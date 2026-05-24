@@ -62,8 +62,8 @@ return {
         { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer" },
         { "<c-/>", function() require("kpmac.lib.terminals").toggle_shell() end, desc = "Toggle shell terminal" },
         { "<leader>tl", function() require("kpmac.lib.terminals").cycle_shell_layout() end, desc = "Cycle shell terminal layout" },
-        { "]]", function() require("kpmac.lib.lsp_ref_jump").jump(vim.v.count1) end, desc = "Next reference", mode = { "n", "t" } },
-        { "[[", function() require("kpmac.lib.lsp_ref_jump").jump(-vim.v.count1) end, desc = "Prev reference", mode = { "n", "t" } },
+        { "]]", function() require("kpmac.lib.lsp_ref_jump").jump(vim.v.count1) end, desc = "Next reference" },
+        { "[[", function() require("kpmac.lib.lsp_ref_jump").jump(-vim.v.count1) end, desc = "Prev reference" },
     },
     init = function()
         require("kpmac.lib.lsp_ref_jump").setup_keymaps()
