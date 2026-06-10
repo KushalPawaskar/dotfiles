@@ -7,7 +7,6 @@ M.nice_color_schemes = {
     "Builtin Pastel Dark",
     "ChallengerDeep",
     "Cobalt 2 (Gogh)",
-    "Digerati (terminal.sexy)",
     "Dracula",
     "duckbones",
     "Ef-Autumn",
