@@ -3,7 +3,7 @@ return {
     config = function()
         require("livepreview.config").set({
             port = 5500,
-            browser = "default",
+            browser = "/Applications/Zen.app/Contents/MacOS/zen",
             dynamic_root = false,
             sync_scroll = true,
             picker = "",
