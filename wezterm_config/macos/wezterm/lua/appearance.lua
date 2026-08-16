@@ -78,6 +78,13 @@ function M.apply(config)
             end
         end
 
+        -- manual per-tab color override (leader t c) takes precedence over title-based color
+        local manual_color = colors.tab_colors[tab.tab_id]
+        if manual_color then
+            bg = manual_color
+            fg = is_active and "#ffffff" or "#000000"
+        end
+
         return {
             { Background = { Color = bg } },
             { Foreground = { Color = fg } },

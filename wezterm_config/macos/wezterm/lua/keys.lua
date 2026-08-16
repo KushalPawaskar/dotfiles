@@ -63,6 +63,37 @@ function M.apply(config)
                 key = "s",      -- t s (tab switcher)
                 action = wezterm.action.ShowTabNavigator,
             },
+            {
+                key = "c",      -- t c (set tab color, independent of title)
+                action = wezterm.action.InputSelector{
+                    title = "Select Tab Color",
+                    choices = (function()
+                        local names = {}
+                        for name, _ in pairs(colors.vibrant) do
+                            table.insert(names, name)
+                        end
+                        table.sort(names)
+
+                        local choices = {}
+                        for _, name in ipairs(names) do
+                            table.insert(choices, { label = name })
+                        end
+                        table.insert(choices, { label = "reset" })
+                        return choices
+                    end)(),
+                    action = wezterm.action_callback(function(window, pane, id, label)
+                        if label then
+                            local tab_id = window:active_tab():tab_id()
+                            if label == "reset" then
+                                colors.tab_colors[tab_id] = nil
+                            else
+                                colors.tab_colors[tab_id] = colors.vibrant[label]
+                            end
+                        end
+                        window:perform_action(wezterm.action.PopKeyTable, pane)
+                    end),
+                },
+            },
             { key = "Escape", action = wezterm.action.PopKeyTable },    -- t <esc>
         },
         -- sub-menu for commands starting with key s (after modifiers)

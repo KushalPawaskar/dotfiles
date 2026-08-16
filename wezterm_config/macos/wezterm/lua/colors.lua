@@ -36,6 +36,12 @@ M.vibrant = {
     rose   = "#F06C7C",  -- was #F43F5E
 }
 
+-- per-tab manual color overrides, keyed by tab_id (set via leader t c)
+-- lives here (not in keys.lua) so appearance.lua's format-tab-title can read it too
+-- starts empty; populated at runtime as { [tab_id] = hex_color } when leader t c is used,
+-- not persisted to disk, and reset when wezterm reloads/restarts
+M.tab_colors = {}
+
 -- Background / neutral colors
 M.bg = {
     dark_gray      = "#1E1E2E",
