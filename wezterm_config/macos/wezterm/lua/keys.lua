@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local colors = require("lua/colors")
+local debug_log = require("lua/debug_log")  -- temporary: diagnosing overnight tab_colors reset
 
 local M = {}
 
@@ -89,6 +90,7 @@ function M.apply(config)
                             else
                                 colors.tab_colors[tab_id] = colors.vibrant[label]
                             end
+                            debug_log.log("tab-color-set tab_id=" .. tostring(tab_id) .. " label=" .. tostring(label))
                         end
                         window:perform_action(wezterm.action.PopKeyTable, pane)
                     end),

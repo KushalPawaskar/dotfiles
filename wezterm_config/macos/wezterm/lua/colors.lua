@@ -1,3 +1,5 @@
+local debug_log = require("lua/debug_log")  -- temporary: diagnosing overnight tab_colors reset
+
 local M = {}
 
 -- export nice color schemes so that it is accessible to InputSelector in keys.lua
@@ -41,6 +43,7 @@ M.vibrant = {
 -- starts empty; populated at runtime as { [tab_id] = hex_color } when leader t c is used,
 -- not persisted to disk, and reset when wezterm reloads/restarts
 M.tab_colors = {}
+debug_log.log("colors.lua loaded -> tab_colors reset to {}")
 
 -- Background / neutral colors
 M.bg = {
