@@ -1,3 +1,4 @@
+local wezterm = require("wezterm")
 local debug_log = require("lua/debug_log")  -- temporary: diagnosing overnight tab_colors reset
 
 local M = {}
@@ -40,10 +41,18 @@ M.vibrant = {
 
 -- per-tab manual color overrides, keyed by tab_id (set via leader t c)
 -- lives here (not in keys.lua) so appearance.lua's format-tab-title can read it too
--- starts empty; populated at runtime as { [tab_id] = hex_color } when leader t c is used,
--- not persisted to disk, and reset when wezterm reloads/restarts
-M.tab_colors = {}
-debug_log.log("colors.lua loaded -> tab_colors reset to {}")
+-- backed by wezterm.GLOBAL so it survives automatic config reloads (which re-execute
+-- this whole module and would otherwise wipe a plain local table) -- confirmed via
+-- debug_log that reloads, not process/machine restarts, were resetting tab colors.
+-- still doesn't survive a full wezterm process restart or machine reboot.
+wezterm.GLOBAL.tab_colors = wezterm.GLOBAL.tab_colors or {}
+M.tab_colors = wezterm.GLOBAL.tab_colors
+
+local entry_count = 0
+for _ in pairs(M.tab_colors) do
+    entry_count = entry_count + 1
+end
+debug_log.log("colors.lua loaded -> tab_colors (wezterm.GLOBAL-backed) has " .. entry_count .. " entries")
 
 -- Background / neutral colors
 M.bg = {
