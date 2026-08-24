@@ -39,20 +39,60 @@ M.vibrant = {
     rose   = "#F06C7C",  -- was #F43F5E
 }
 
--- per-tab manual color overrides, keyed by tab_id (set via leader t c)
+-- per-tab manual color overrides, keyed by tab_id as a string (set via leader t c)
 -- lives here (not in keys.lua) so appearance.lua's format-tab-title can read it too
--- backed by wezterm.GLOBAL so it survives automatic config reloads (which re-execute
--- this whole module and would otherwise wipe a plain local table) -- confirmed via
--- debug_log that reloads, not process/machine restarts, were resetting tab colors.
--- still doesn't survive a full wezterm process restart or machine reboot.
-wezterm.GLOBAL.tab_colors = wezterm.GLOBAL.tab_colors or {}
-M.tab_colors = wezterm.GLOBAL.tab_colors
+-- persisted to disk rather than wezterm.GLOBAL: debug_log showed GLOBAL getting wiped
+-- on every automatic config reload on this nightly build -- wezterm evaluates config
+-- multiple times per reload (validation pass + apply pass) and GLOBAL isn't reliably
+-- shared across those passes here. a plain JSON file survives reloads within a
+-- session, which is all we want: colors are deliberately wiped on every real
+-- process start (see gui-startup handler below) since tab_id isn't stable across
+-- restarts and we don't want colors reappearing on the wrong fresh tab.
+local TAB_COLORS_PATH = (os.getenv("HOME") or "") .. "/.wezterm_tab_colors.json"
+
+local function load_tab_colors()
+    local f = io.open(TAB_COLORS_PATH, "r")
+    if not f then
+        return {}
+    end
+    local content = f:read("*a")
+    f:close()
+    local ok, parsed = pcall(wezterm.json_parse, content)
+    if ok and type(parsed) == "table" then
+        return parsed
+    end
+    return {}
+end
+
+function M.save_tab_colors()
+    local f = io.open(TAB_COLORS_PATH, "w")
+    if not f then
+        return
+    end
+    f:write(wezterm.json_encode(M.tab_colors))
+    f:close()
+end
+
+function M.clear_tab_colors()
+    M.tab_colors = {}
+    M.save_tab_colors()
+end
+
+M.tab_colors = load_tab_colors()
+
+-- wipe any colors left over from a previous session on every genuine fresh
+-- process start (gui-startup does NOT fire during automatic config reloads,
+-- confirmed via debug_log -- only on a real launch)
+wezterm.on("gui-startup", function()
+    M.clear_tab_colors()
+    debug_log.log("gui-startup -> tab_colors cleared for new session")
+end)
 
 local entry_count = 0
 for _ in pairs(M.tab_colors) do
     entry_count = entry_count + 1
 end
-debug_log.log("colors.lua loaded -> tab_colors (wezterm.GLOBAL-backed) has " .. entry_count .. " entries")
+debug_log.log("colors.lua loaded -> tab_colors (disk-backed) has " .. entry_count .. " entries")
 
 -- Background / neutral colors
 M.bg = {

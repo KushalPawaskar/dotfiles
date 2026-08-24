@@ -85,13 +85,14 @@ function M.apply(config)
                     action = wezterm.action_callback(function(window, pane, id, label)
                         if label then
                             local tab_id = window:active_tab():tab_id()
-                            -- key must be a string: wezterm.GLOBAL-backed tables reject numeric keys
+                            -- key must be a string: JSON objects (and wezterm.GLOBAL) reject numeric keys
                             local tab_key = tostring(tab_id)
                             if label == "reset" then
                                 colors.tab_colors[tab_key] = nil
                             else
                                 colors.tab_colors[tab_key] = colors.vibrant[label]
                             end
+                            colors.save_tab_colors()
                             debug_log.log("tab-color-set tab_id=" .. tab_key .. " label=" .. tostring(label))
                         end
                         window:perform_action(wezterm.action.PopKeyTable, pane)
