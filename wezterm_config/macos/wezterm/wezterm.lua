@@ -11,14 +11,12 @@ local appearance = require("lua/appearance")
 local colors = require("lua/colors")
 local keys = require("lua/keys")
 local quake = require("lua/quake")  -- iterm2 like hotkey window (quake style dropdown)
-local debug_log = require("lua/debug_log")  -- temporary: diagnosing overnight tab_colors reset
 
 -- apply configuration from modules
 appearance.apply(config)
 colors.apply(config)
 keys.apply(config)
 quake.apply(config)
-debug_log.apply(config)
 
 -- broadcast input
 
