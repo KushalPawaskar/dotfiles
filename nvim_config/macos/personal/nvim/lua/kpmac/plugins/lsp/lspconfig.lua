@@ -3,8 +3,6 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     'saghen/blink.cmp',
-    'nvim-lua/plenary.nvim',
-    { 'antosha417/nvim-lsp-file-operations', config = true },
     { 'folke/lazydev.nvim', opts = {} },
   },
   config = function()
