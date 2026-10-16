@@ -15,7 +15,13 @@ M.nice_color_schemes = {
     "Ef-Day",       -- light
     "Ef-Winter",
     "Eldritch",
-    "Elio (Gogh)"
+    "Elio (Gogh)",
+    "Fahrenheit",
+    "farmhouse-dark",
+    "Flatland (Gogh)",
+    "ForestBlue",
+    "Foxnightly (Gogh)",
+    "FunForrest",
 }
 
 function M.apply(config)

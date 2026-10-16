@@ -113,3 +113,9 @@ if [ -f '/Users/kpmac/installs/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/kpmac/installs/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/kpmac/installs/google-cloud-sdk/completion.zsh.inc'; fi
+
+# >>> pvai-mobile android (managed by setup.sh) >>>
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+export ANDROID_HOME="/Users/kpmac/Library/Android/sdk"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+# <<< pvai-mobile android <<<
